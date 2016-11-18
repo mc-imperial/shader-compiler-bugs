@@ -1,0 +1,4 @@
+LINK_ERROR
+Fragment info
+-------------
+(0) : fatal error C9999: unexpected expression in DUI_foreachId

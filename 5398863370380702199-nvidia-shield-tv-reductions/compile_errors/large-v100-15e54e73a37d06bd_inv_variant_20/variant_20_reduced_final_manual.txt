@@ -1,0 +1,4 @@
+COMPILE_ERROR
+0(11) : error C1101: ambiguous overloaded function reference "reflect(float, mediump float)"
+    (0) : superp float reflect(superp float, superp float)
+    (0) : float reflect(float, float)
