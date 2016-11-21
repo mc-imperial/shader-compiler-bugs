@@ -1,0 +1,19 @@
+This is the information requested by Intel for bug reporting:
+
+https://software.intel.com/en-us/forums/graphics-driver-bug-reporting/topic/532646
+
+System Setup Information:
+-----------------------------------------
+
+System Used: Dell XPS 
+CPU SKU: i7
+GPU SKU: HD 520
+Processor Line: U-Series
+System BIOS Version: Dell Inc. 1.0.0, 10/09/2015
+CMOS settings: I can check on request
+Graphics Driver Version:
+GOP/VBIOS Version: Intel Video BIOS
+Operating System: Windows 10
+OS Version: Pro
+API: OpenGL
+Occurs on non-Intel GPUs?: Haven't tried
