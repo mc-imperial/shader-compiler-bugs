@@ -1,0 +1,15 @@
+Steps to Reproduce:
+-------------------------------
+1. Run the Intel GLSL compiler on variant_14_reduced_216_simplified.frag
+
+Expected Results:
+-------------------------------
+The shader should compile successfully.
+
+Actual Results:
+-------------------------------
+ERROR: 0:5: '' : cannot evaluate offset into the vector
+
+Additional Information:
+-------------------------------
+The shader is accepted by glslangValidator.
