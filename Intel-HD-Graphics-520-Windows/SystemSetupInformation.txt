@@ -11,7 +11,7 @@ GPU SKU: HD 520
 Processor Line: U-Series
 System BIOS Version: Dell Inc. 1.0.0, 10/09/2015
 CMOS settings: I can check on request
-Graphics Driver Version:
+Graphics Driver Version: 20.19.15.4501
 GOP/VBIOS Version: Intel Video BIOS
 Operating System: Windows 10
 OS Version: Pro
