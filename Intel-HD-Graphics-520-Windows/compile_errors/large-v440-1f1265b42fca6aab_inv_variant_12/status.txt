@@ -1,0 +1,3 @@
+Reported:
+
+https://software.intel.com/en-us/forums/graphics-driver-bug-reporting/topic/703553
