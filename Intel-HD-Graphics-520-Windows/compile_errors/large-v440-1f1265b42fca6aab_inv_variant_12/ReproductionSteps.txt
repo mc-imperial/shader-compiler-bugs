@@ -1,0 +1,16 @@
+Steps to Reproduce:
+-------------------------------
+1. Run the Intel GLSL compiler on variant_12_reduced_338_simplified.frag
+
+Expected Results:
+-------------------------------
+The shader should compile successfully.
+
+Actual Results:
+-------------------------------
+ERROR: 0:5: '' : unary '-' not allowed for provided data type
+ERROR: 0:5: '' : unary '-' not allowed for provided data type
+
+Additional Information:
+-------------------------------
+The shader is accepted by glslangValidator.
