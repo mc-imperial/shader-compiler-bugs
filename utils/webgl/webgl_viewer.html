@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>WebGL viewer</title>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+
+<style>
+    #opengl-canvas {
+        border: none;
+        background-color: #000;
+    }
+
+    #location, #shader_source, #console {
+        width: 622px;
+        height: 200px;
+        float: left;
+        clear: both;
+        resize: none;
+    }
+
+    button {
+        width: 200px;
+        margin: 0px;
+        float: left;
+        clear: both;
+    }
+
+    .cell {
+        display: table-cell;
+        vertical-align: top;
+        /*border: solid;
+        border-width: thin;*/
+    }
+
+    .shader_location_input {
+        text-align: center;
+    }
+</style>
+
+<script type="text/javascript">
+    /* global variables ------------------------------------------------------*/
+    var gl;
+
+    var shader;
+    var shaderProgram;
+    var referenceShader;
+
+    var triangleLeftVertexPositionBuffer;
+    var triangleRightVertexPositionBuffer;
+
+    var isRunning;
+
+    /* HTML listeners --------------------------------------------------------*/
+    function doSet(shader) {
+        if (gl) {
+            gl.clear(gl.COLOR_BUFFER_BIT);
+            gl.deleteProgram(gl.getParameter(gl.CURRENT_PROGRAM));
+        }
+        document.getElementById("console").value = "";
+        webGLStart(shader);
+    }
+
+    function writeConsole(message) {
+        console = document.getElementById("console");
+        console.value += message;
+    }
+
+    function logShaderInfoLog() {
+        console = document.getElementById("console");
+        console.value += gl.getShaderInfoLog(shader);
+    }
+
+    /* OpenGL functions ------------------------------------------------------*/
+    function initGL(canvas) {
+        try {
+            gl = canvas.getContext("experimental-webgl",
+                { preserveDrawingBuffer: true });
+            gl.viewportWidth = canvas.width;
+            gl.viewportHeight = canvas.height;
+        } catch (e) {
+        }
+        if (!gl) {
+            alert("Could not initialise WebGL, sorry :-(");
+        }
+    }
+
+    function makeShader(gl, src, shaderType) {
+        if (shaderType == "fragment") {
+            shader = gl.createShader(gl.FRAGMENT_SHADER);
+        } else if (shaderType == "vertex") {
+            shader = gl.createShader(gl.VERTEX_SHADER);
+        } else {
+            return {
+                shader: null,
+                log: "Shader type '" + shaderType + "' is not fragment or vertex."
+            };
+        }
+
+        gl.shaderSource(shader, src);
+        gl.compileShader(shader);
+
+        if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+            var error = gl.getShaderInfoLog(shader);
+            writeConsole(error);
+            return {
+                shader: null,
+                log: error
+            };
+        }
+
+        return {
+            shader: shader,
+            log: ""
+        };
+    }
+
+    function trySetUniform1f(name, x) {
+        var loc = gl.getUniformLocation(shaderProgram, name);
+        if (loc != null) {
+            gl.uniform1f(loc, x);
+        }
+    }
+
+    function trySetUniform2f(name, x, y) {
+        var loc = gl.getUniformLocation(shaderProgram, name);
+        if (loc != null) {
+            gl.uniform2f(loc, x, y);
+        }
+    }
+
+    function initShaders(fragmentShader, vertexShader) {
+        shaderProgram = gl.createProgram();
+        gl.attachShader(shaderProgram, vertexShader);
+        gl.attachShader(shaderProgram, fragmentShader);
+        gl.linkProgram(shaderProgram);
+        gl.detachShader(shaderProgram, vertexShader);
+        gl.detachShader(shaderProgram, fragmentShader);
+
+        if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
+            logShaderInfoLog();
+            return {
+                succeeded: false,
+                log: "Error linking shaders."
+            };
+        }
+
+        gl.useProgram(shaderProgram);
+
+        shaderProgram.vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aVertexPosition");
+        gl.enableVertexAttribArray(shaderProgram.vertexPositionAttribute);
+
+        trySetUniform2f("injectionSwitch", 0.0, 1.0);
+        trySetUniform1f("time", 0.0);
+        trySetUniform2f("mouse", 0.0, 0.0);
+        trySetUniform2f("resolution", gl.viewportWidth, gl.viewportHeight);
+
+        return {
+            succeeded: true,
+            log: ""
+        };
+    }
+
+    function initBuffers() {
+        triangleLeftVertexPositionBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, triangleLeftVertexPositionBuffer);
+        var vertices = [
+             1.0,  1.0,  0.0,
+            -1.0,  1.0,  0.0,
+             1.0, -1.0,  0.0
+        ];
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+        triangleLeftVertexPositionBuffer.itemSize = 3;
+        triangleLeftVertexPositionBuffer.numItems = 3;
+
+        triangleRightVertexPositionBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, triangleRightVertexPositionBuffer);
+        var vertices = [
+            -1.0,  1.0,  0.0,
+            -1.0, -1.0,  0.0,
+             1.0, -1.0,  0.0
+        ];
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+        triangleRightVertexPositionBuffer.itemSize = 3;
+        triangleRightVertexPositionBuffer.numItems = 3;
+    }
+
+    function drawScene() {
+        gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
+        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+        gl.bindBuffer(gl.ARRAY_BUFFER, triangleLeftVertexPositionBuffer);
+        gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, triangleLeftVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
+        gl.drawArrays(gl.TRIANGLES, 0, triangleLeftVertexPositionBuffer.numItems);
+
+        gl.bindBuffer(gl.ARRAY_BUFFER, triangleRightVertexPositionBuffer);
+        gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, triangleRightVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
+        gl.drawArrays(gl.TRIANGLES, 0, triangleRightVertexPositionBuffer.numItems);
+    }
+
+    // Returns true if and only if compilation and execution was successful
+    function webGLStart(fragShader) {
+        var canvas = document.getElementById("opengl-canvas");
+        initGL(canvas);
+
+        var fragmentShaderResult = makeShader(gl, fragShader, "fragment");
+        if (fragmentShaderResult.shader == null) {
+            var error = "Failed making fragment shader.";
+            logShaderInfoLog();
+            return {
+                succeeded: false,
+                log: error + "\n" + fragmentShaderResult.log
+            };
+        }
+
+        var vertexShaderSource = "attribute vec3 aVertexPosition; void main(void) { gl_Position = vec4(aVertexPosition, 1.0); }";
+        var vertexShaderResult = makeShader(gl, vertexShaderSource, "vertex");
+        if (vertexShaderResult.shader == null) {
+            var error = "Failed making vertex shader.";
+            logShaderInfoLog();
+            return {
+                succeeded: false,
+                log: error + "\n" + vertexShaderResult.log
+            };
+        }
+
+        var initResult = initShaders(fragmentShaderResult.shader, vertexShaderResult.shader);
+        if (!initResult.succeeded) {
+            logShaderInfoLog();
+            return {
+                succeeded: false,
+                log: initResult.log
+            };
+        }
+
+        initBuffers();
+
+        gl.clearColor(0.0, 0.0, 0.0, 1.0);
+        drawScene();
+        gl.finish();
+
+        //var data = new Uint8Array(gl.viewportWidth * gl.viewportHeight * 4);
+        //gl.readPixels(0, 0, gl.viewportWidth, gl.viewportHeight, gl.RGBA, gl.UNSIGNED_BYTE, data);
+        //document.getElementById("ppm_data").value = makePPM(data);
+
+        return {
+            succeeded: true,
+            log: ""
+        };
+    }
+</script>
+
+</head>
+
+<body>
+	<div class="grid">
+		<div class="row">
+			<div class="cell">
+				<canvas id="opengl-canvas" style="border: none;" width="640" height="480"></canvas>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="cell shader_location_input">
+				<textarea id="shader_source" placeholder="Source of fragment shader"></textarea>
+                <button id="Execute" title="Displays shader set in the shader source field" onclick="doSet(document.getElementById('shader_source').value)">Execute</button>
+                <textarea id="console" placeholder="Shader compilation output" readonly></textarea>
+			</div>
+			<div class="cell">
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>
