@@ -1,0 +1,19 @@
+This is the information requested by Intel for bug reporting:
+
+https://software.intel.com/en-us/forums/graphics-driver-bug-reporting/topic/532646
+
+System Setup Information:
+-----------------------------------------
+
+System Used: Dell XPS 
+CPU SKU: i7
+GPU SKU: HD 520
+Processor Line: U-Series
+System BIOS Version: Dell Inc. 1.0.0, 10/09/2015
+CMOS settings: I can check on request
+Graphics Driver Version: 20.19.15.4501
+GOP/VBIOS Version: Intel Video BIOS
+Operating System: Windows 10
+OS Version: Pro
+API: WebGL 1.0 (OpenGL ES 2.0 Chromium), WebGL vendor: Google Inc., WebGL renderer: ANGLE (Intel(R) HD Graphics 520 Direct3D11 vs_5_0 ps_5_0), broswer version: Google Chrome Version 54.0.2840.99 m (64-bit)
+Occurs on non-Intel GPUs?: Haven't tried

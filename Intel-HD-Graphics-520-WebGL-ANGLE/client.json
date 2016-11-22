@@ -1,0 +1,20 @@
+{
+  "platform_info": {
+    "clientplatform": "webgl",
+    "appCodeName": "Mozilla",
+    "appName": "Netscape",
+    "appVersion": "5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36",
+    "platform": "Win32",
+    "product": "Gecko",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36",
+    "vendor": "Google Inc.",
+    "vendorSub": "",
+    "GL_VERSION": "WebGL 1.0 (OpenGL ES 2.0 Chromium)",
+    "GL_SHADING_LANGUAGE_VERSION": "WebGL GLSL ES 1.0 (OpenGL ES GLSL ES 1.0 Chromium)",
+    "GL_VENDOR": "WebKit",
+    "GL_RENDERER": "WebKit WebGL",
+    "UNMASKED_VENDOR_WEBGL": "Google Inc.",
+    "UNMASKED_RENDERER_WEBGL": "ANGLE (Intel(R) HD Graphics 520 Direct3D11 vs_5_0 ps_5_0)",
+    "Antialiasing": true
+  }
+}
