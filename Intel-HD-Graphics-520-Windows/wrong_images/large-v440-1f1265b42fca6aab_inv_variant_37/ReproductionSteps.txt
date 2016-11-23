@@ -1,0 +1,35 @@
+Steps to Reproduce:
+-------------------------------
+
+1. Obtain the latest release of get-image, a simple tool that creates
+   a .png image from a fragment shader (alternatively, use some other
+   method observing the effect of a fragment shader)
+
+2. From a command prompt, execute:
+
+   C:\path\to\get_image\bin\Windows\get_image.exe original.frag
+
+   This will create output.png, which should look like original.png
+
+3. From a command prompt, execute:
+
+   C:\path\to\get_image\bin\Windows\get_image.exe variant.frag
+
+   This will create output.png, which should look like variant.png
+
+Expected Results:
+-------------------------------
+Both shaders should render an image that looks like original.png.  This is because the only difference between the .frag files is:
+
+- There is an expression, 1.0, right after the return statement in
+  "color_at".  This expression is unreachable and side-effect free, so
+  should not impact on the results of shader execution.
+
+
+Actual Results:
+-------------------------------
+The shaders render completely different images, which they should not.
+
+Additional Information:
+-------------------------------
+N/A

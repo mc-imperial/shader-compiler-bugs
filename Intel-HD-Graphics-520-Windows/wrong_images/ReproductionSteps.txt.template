@@ -1,0 +1,32 @@
+Steps to Reproduce:
+-------------------------------
+
+1. Obtain the latest release of get-image, a simple tool that creates
+   a .png image from a fragment shader (alternatively, use some other
+   method observing the effect of a fragment shader)
+
+2. From a command prompt, execute:
+
+   C:\path\to\get_image\bin\Windows\get_image.exe original.frag
+
+   This will create output.png, which should look like original.png
+
+3. From a command prompt, execute:
+
+   C:\path\to\get_image\bin\Windows\get_image.exe variant.frag
+
+   This will create output.png, which should look like variant.png
+
+Expected Results:
+-------------------------------
+Both shaders should render an image that looks like original.png.  This is because the only difference between the .frag files is:
+
+TODO
+
+Actual Results:
+-------------------------------
+The shaders render significantly different images, which they should not.
+
+Additional Information:
+-------------------------------
+N/A
