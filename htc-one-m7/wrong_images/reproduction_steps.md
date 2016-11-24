@@ -3,15 +3,15 @@
 1. Obtain the latest release of libgdx-get-image from:
    https://github.com/mc-imperial/libgdx-get-image/releases
    This tool renders `shader.frag` (stored in the root of external storage)
-   to the screen. Copy the apk to the device and install it. Alternatively, 
-   use some other method for observing the effect of a fragment shader.
+   to the screen. Copy the apk to the device (or download directly) and install it. 
+   Alternatively, use some other method for observing the effect of a fragment shader.
 
-2. Copy `recipient_reduced_final.frag` to the "external storage" of the device
+2. Copy or download `recipient_reduced_final.frag` to the "external storage" of the device
    (where you have directories like `Downloads`, `Videos`, etc.)
    Name it `shader.frag`.
    Run the `libgdx-get-image` app.
 
-3. Copy `variant_*.frag` to the "external storage" of the device.
+3. Copy or download `variant_*.frag` to the "external storage" of the device.
    Name it `shader.frag`.
    Run the `libgdx-get-image` app.
    You may need to close the app from the task switcher before it loads
@@ -26,6 +26,7 @@ TODO
 
 # Actual Results:
 The shaders render significantly different images, which they should not.
+See the included screenshots.
 
 TODO
 
