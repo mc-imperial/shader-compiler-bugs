@@ -1,4 +1,6 @@
-# Steps to reproduce on Android:
+The full OS and plaform details are in `client_stripped.json`.
+
+# Steps to reproduce on Android: 
 
 1. Obtain the latest release of libgdx-get-image from:
    https://github.com/mc-imperial/libgdx-get-image/releases
