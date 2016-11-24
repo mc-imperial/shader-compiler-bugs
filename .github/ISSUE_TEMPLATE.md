@@ -1,4 +1,4 @@
-[[Shaders, screenshots, error log, etc.]](PASTE_GITHUB_URL) [[ZIP]](https://minhaskamal.github.io/DownGit/#/home?url=PASTE_GITHUB_URL)
+[[Shaders, screenshots, error log, reproduction steps, etc.]](PASTE_GITHUB_URL) [[ZIP]](https://minhaskamal.github.io/DownGit/#/home?url=PASTE_GITHUB_URL)
 
 Delete->Added labels.
 Delete->Title describes error. 
