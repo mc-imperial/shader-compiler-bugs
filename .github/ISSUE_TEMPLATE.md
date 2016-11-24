@@ -3,5 +3,12 @@
 Delete->Added labels.
 Delete->Title describes error. 
 
+Recipient:
+
+![recipient image](PASTE_PNG_DOWNLOAD_URL "recipient image")
+
+Variant:
+
+![variant image](PASTE_PNG_DOWNLOAD_URL "variant image")
 
 
