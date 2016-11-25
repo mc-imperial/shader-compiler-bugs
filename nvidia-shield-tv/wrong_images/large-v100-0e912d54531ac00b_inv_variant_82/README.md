@@ -29,5 +29,6 @@ This is because the only difference between the .frag files is:
 # Actual Results:
 The shaders render significantly different images, which they should not.
 See the included screenshots.
-The variant shader is just a black image. 
+The recipient shader produces several squares.
+The variant shader produces a black image. 
 
