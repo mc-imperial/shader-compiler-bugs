@@ -29,9 +29,9 @@ void main(void)
 {
     if (injectionSwitch.x > injectionSwitch.y)
     {
-	if (injectionSwitch.x > injectionSwitch.y)
-	    return;
-	int donor_replacementfrom = 0;
+        if (injectionSwitch.x > injectionSwitch.y)
+            return;
+        int donor_replacementfrom = 0;
     }
     vec2 uv = gl_FragCoord.xy / resolution.xy - .5;
     uv.y *= resolution.y / resolution.x;
@@ -68,7 +68,7 @@ void main(void)
                     p = abs(p) / dot(p, p) - 0.340;
                     a += abs(length(p) - pa * 0.2);
                     if (injectionSwitch.x > injectionSwitch.y)
-			discard;
+                        discard;
                     pa = length(p);
                 }
             a *= a * a * 2.;
