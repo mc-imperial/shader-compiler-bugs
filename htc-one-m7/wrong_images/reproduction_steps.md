@@ -1,3 +1,5 @@
+The full OS and plaform details are in client_stripped.json.
+
 # Steps to reproduce on Android:
 
 1. Obtain the latest release of libgdx-get-image from:
