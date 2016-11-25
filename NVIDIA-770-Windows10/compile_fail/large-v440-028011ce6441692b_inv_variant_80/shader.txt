@@ -1,0 +1,11 @@
+LINK_ERROR
+Vertex info
+-----------
+0(2) : warning C7555: 'attribute' is deprecated, use 'in/out' instead
+
+Fragment info
+-------------
+0(17) : error C1067: too little data in type constructor
+0(17) : error C1067: too little data in type constructor
+(0) : fatal error C9999: Can't convert to expr: 1, @TMP3 + 0.1f
+
