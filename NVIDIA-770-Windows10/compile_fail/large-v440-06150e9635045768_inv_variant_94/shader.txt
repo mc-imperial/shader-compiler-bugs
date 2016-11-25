@@ -1,0 +1,49 @@
+LINK_ERROR
+Vertex info
+-----------
+0(2) : warning C7555: 'attribute' is deprecated, use 'in/out' instead
+
+Fragment info
+-------------
+Internal error: assembly compile error for fragment shader at offset 544:
+-- error message --
+line 21, column 30:  error: offset for relative array access outside supported range
+-- internal assembly text --
+!!NVfp5.0
+OPTION NV_bindless_texture;
+# cgc version 3.4.0001, build date Oct  1 2016
+# command line args: 
+#vendor NVIDIA Corporation
+#version 3.4.0.1 COP Build Date Oct  1 2016
+#profile gp5fp
+#program main
+#semantic @TMP34 : __LOCAL
+#var float4 @TMP34[0] :  : local[0] : -1 : 1
+TEMP R0;
+TEMP RC, HC;
+TEMP lmem[5];
+MOV.F lmem[0], {1, 0, 0, 0}.x;
+MOV.F lmem[1], {1, 0, 0, 0}.x;
+MOV.F lmem[2], {1, 0, 0, 0}.x;
+MOV.F lmem[3], {1, 0, 0, 0}.x;
+MOV.F R0.x, {1, 0, 0, 0};
+MOV.U R0.x, R0;
+MOV.F lmem[4], {1, 0, 0, 0}.xyxx;
+MOV.F R0.y, lmem[R0.x + 79446].y;
+MUL.F R0.x, R0.y, {0.5, 0, 0, 0};
+FLR.F R0.x, R0;
+MAD.F R0.x, -R0, {2, 0, 0, 0}, R0.y;
+ADD.F R0.x, R0, {-1, 0, 0, 0};
+DP2.F R0.x, R0.x, R0.x;
+RSQ.F R0.x, R0.x;
+RCP.F R0.x, R0.x;
+SLT.F R0.x, R0, {0.699999988, 0, 0, 0};
+TRUNC.U.CC HC.x, R0;
+IF    NE.x;
+ENDIF;
+REP.S ;
+SEQ.U.CC HC.x, {1, 0, 0, 0}, {0, 0, 0, 0};
+BRK   (NE.x);
+ENDREP;
+END
+# 23 instructions, 1 R-regs
