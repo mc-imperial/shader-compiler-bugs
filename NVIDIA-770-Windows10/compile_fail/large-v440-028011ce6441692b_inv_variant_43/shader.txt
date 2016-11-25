@@ -1,0 +1,8 @@
+LINK_ERROR
+Vertex info
+-----------
+0(2) : warning C7555: 'attribute' is deprecated, use 'in/out' instead
+
+Fragment info
+-------------
+0(7) : error C1059: non constant expression in initialization
