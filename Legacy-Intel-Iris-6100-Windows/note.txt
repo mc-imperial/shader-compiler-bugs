@@ -1,0 +1,6 @@
+This folder records an issue that Ally filed during the early stages
+of the project.  It was found via our tool chain at an intermediate
+stage of development.
+
+The bug was filed using GeexLab to render the shader, hence why a
+GeexLab .xml file is included instead of a pair of .frag files.

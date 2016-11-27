@@ -1,0 +1,5 @@
+Reported to Intel:
+
+https://software.intel.com/en-us/forums/developing-games-and-graphics-on-intel/topic/610778
+
+They report that they have now fixed the issue.

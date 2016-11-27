@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+
+<!--
+Original code: https://software.intel.com/en-us/forums/developing-games-and-graphics-on-intel/topic/607414
+Ported to GeeXLab by Stefan (http://www.geeks3d.com/forums/)
+
+NVIDIA compiler complains
+0(61) : warning C7050: "dist" might be used before being initialized
+-->
+
+<glsl_hacker>	
+
+  <window name="win3d01" title="GLSLSandbox/Test '(p + vec2(0.0)).y'" 
+          width="800" height="480"
+          gl_version_major="2" gl_version_minor="1"/>
+
+
+          
+<gpu_program name="shadertoy_prog" >
+	<raw_data_vs><![CDATA[	 
+void main(){gl_TexCoord[0] = gl_MultiTexCoord0;gl_Position = gl_ModelViewProjectionMatrix*gl_Vertex;}
+  ]]></raw_data_vs>	
+  
+  <raw_data_ps><![CDATA[
+uniform vec3      iResolution;     
+uniform float     iGlobalTime;     
+uniform vec4      iMouse;
+#define time iGlobalTime
+vec2 resolution = iResolution.xy;
+vec2 mouse = min(iMouse.xy / iResolution.xy, vec2(1));
+/*
+#version 150
+
+precision mediump float;
+uniform float time;
+
+uniform vec2 mouse;
+
+uniform vec2 resolution;
+*/
+float EPS = min(max(sin(time), .01), .1);
+
+vec2 onRep(vec2 p, float interval)
+{
+    return mod(p, interval) - interval * 0.5;
+}
+float distBar(vec2 p, float interval, float width)
+{
+    return length(max(abs(onRep(p, interval)) - width, 0.0));
+}
+float distTube(vec2 p, float interval, float width)
+{
+    return length(onRep(p, interval)) - width;
+}
+float distScene(vec3 p)
+{
+    float bar_x = distBar(p.yz, 1.0, 0.1);
+    float bar_y = distBar(p.xz, 1.0, 0.1);
+    float bar_z = distBar(p.xy, 1.0, 0.1);
+    float tube_x = distTube(p.yz, 0.1, 0.025);
+    float tube_y = distTube(p.xz, 0.1, 0.025);
+    float tube_z = distTube(p.xy, 0.1, 0.025);
+    return max(max(max(min(min(bar_x, bar_y), bar_z), - tube_x), - tube_y), - tube_z);
+}
+vec3 getNormal(vec3 p)
+{
+    return normalize(vec3(distScene(p + vec3(EPS, 0.0, 0.0)) - distScene(p + vec3(- EPS, 0.0, 0.0)), distScene(p + vec3(0.0, EPS, 0.0)) - distScene(p + vec3(0.0, - EPS, 0.0)), distScene(p + vec3(0.0, 0.0, EPS)) - distScene(p + vec3(0.0, 0.0, - EPS))));
+}
+void main(void)
+{
+    vec2 p = (gl_FragCoord.xy * 2.0 - resolution) / min(resolution.x, resolution.y);
+    vec3 cPos = vec3(0.0, 0.0, time);
+    vec3 cUp = normalize(vec3(0.1, 0.4, 0.0));
+    vec3 cDir = cross(cUp, vec3(- 1.0, 0.0, 0.0));
+    vec3 cSide = cross(cDir, cUp);
+    float targetDepth = 1.0;
+    vec3 ray = normalize(cSide * p.x + cUp * p.y + cDir * targetDepth);
+    vec3 lightDir = normalize(vec3(1, 1, - 2));
+    float dist;
+    float depth = 0.0;
+    vec3 dPos = cPos;
+    for(
+        int i = 0;
+        i < 64;
+        i ++
+    )
+        {
+            dist = distScene(dPos);
+            depth += dist;
+            dPos = cPos + depth * ray;
+            if(abs(dist) < EPS)
+                break;
+        }
+    vec3 color;
+    if(abs(dist) < EPS)
+        {
+            vec3 normal = getNormal(dPos);
+            float diffuse = clamp(dot(lightDir, normal), 0.1, 1.0);
+            color = vec3(1.0, 0.1, 0.1) * diffuse;
+            // Replace the previous line with the next line to see the bug
+            //color = vec3(1.0, 0.1, 0.1) * (false ? mix(targetDepth, time, false) : diffuse);
+        }
+    else
+        {
+            color = vec3(0.0);
+        }
+    gl_FragColor = vec4(color + 0.05 * depth, 1.0);
+}
+
+
+
+
+   ]]></raw_data_ps>
+</gpu_program>	
+
+
+
+<script name="init_scene" run_mode="INIT" >		
+  <raw_data><![CDATA[	
+
+--[[
+Load and init the GFX v3 helper library.
+--]]
+lib_dir = gh_utils.get_scripting_libs_dir() 		
+dofile(lib_dir .. "lua/gfx03.lua")
+    
+gfx.init()   
+gfx.vsync(0) 
+gfx.display_common_info(1)
+gfx.show_info_quad(0)
+gfx.update_info_quad_size(330, 130)
+gfx.mouse.show(0)
+
+
+winW, winH = gh_window.getsize(0)
+
+
+-- An ortho camera
+--
+camera_ortho = gh_camera.create_ortho(-winW/2, winW/2, -winH/2, winH/2, 1.0, 10.0)
+gh_camera.set_viewport(camera_ortho, 0, 0, winW, winH)
+gh_camera.set_position(camera_ortho, 0, 0, 4)
+
+
+quad = gh_mesh.create_quad(winW, winH)
+shadertoy_prog = gh_node.getid("shadertoy_prog")
+
+
+		]]></raw_data>	
+</script> 	
+
+
+
+	<script name="terminate_scene" run_mode="TERMINATE" >
+		<raw_data><![CDATA[	
+
+gfx.terminate()
+
+		]]></raw_data>
+	</script> 
+
+  
+
+<script name="update_scene" run_mode="FRAME" >		
+  <raw_data><![CDATA[	
+
+gfx.begin_frame()
+local elapsed_time = gfx.get_time()
+local dt = gfx.get_dt()
+
+gh_renderer.set_depth_test_state(0)
+		
+gh_camera.bind(camera_ortho)
+
+gh_gpu_program.bind(shadertoy_prog)
+gh_gpu_program.uniform3f(shadertoy_prog, "iResolution", winW, winH, 0.0)
+gh_gpu_program.uniform1f(shadertoy_prog, "iGlobalTime", elapsed_time)
+
+local mx, my = gh_input.mouse_getpos()
+local mz = gh_input.mouse_get_button_state(1)
+local mw = mz
+gh_gpu_program.uniform4f(shadertoy_prog, "iMouse", mx, -(my - winH), mz, mw)
+
+
+
+gfx.draw_quad(0, 0, 1.0*winW, 1.0*winH)
+	
+gfx.end_frame(1)
+
+		]]></raw_data>	
+</script> 	
+
+
+<script name="resize_scene" run_mode="SIZE" >
+		<raw_data><![CDATA[	
+winW, winH = gh_window.getsize(0)
+
+gh_camera.update_ortho(camera_ortho, -winW/2, winW/2, -winH/2, winH/2, 1.0, 10.0)
+gh_camera.set_viewport(camera_ortho, 0, 0, winW, winH)
+
+gh_mesh.update_quad_size(quad, winW, winH)
+
+gfx.resize(winW, winH)
+	]]></raw_data>	
+</script> 
+
+
+</glsl_hacker>
