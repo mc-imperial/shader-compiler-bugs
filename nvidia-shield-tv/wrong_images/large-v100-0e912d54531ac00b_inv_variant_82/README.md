@@ -1,4 +1,4 @@
-The full OS and plaform details are in client_stripped.json.
+The full OS and plaform details are in `client_stripped.json`.
 
 # Steps to reproduce on Android:
 
@@ -8,7 +8,7 @@ The full OS and plaform details are in client_stripped.json.
    to the screen. Copy the apk to the device (or download directly) and install it. 
    Alternatively, use some other method for observing the effect of a fragment shader.
 
-2. Copy or download `recipient_reduced_final.frag` to the "external storage" of the device
+2. Copy or download `recipient_reduced_final_manual.frag` to the "external storage" of the device
    (where you have directories like `Downloads`, `Videos`, etc.)
    Name it `shader.frag`.
    Run the `libgdx-get-image` app.
@@ -21,14 +21,14 @@ The full OS and plaform details are in client_stripped.json.
    Observe the difference in the rendered image.
 
 # Expected Results:
-Both shaders should render an image that looks like `recipient_reduced_final.png`. 
+Both shaders should render an image that looks like `recipient_reduced_final_manual.png`. 
 This is because the only difference between the .frag files is:
 
-TODO
+ - tranformed three expressions `X` into `(false ? (--s) : X)`.
 
 # Actual Results:
 The shaders render significantly different images, which they should not.
 See the included screenshots.
-
-TODO
+The recipient shader produces several squares.
+The variant shader produces a black image. 
 
