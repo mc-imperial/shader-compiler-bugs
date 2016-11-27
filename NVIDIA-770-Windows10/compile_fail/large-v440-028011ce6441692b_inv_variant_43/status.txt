@@ -1,0 +1,3 @@
+Filed to NVIDIA:
+
+https://devtalk.nvidia.com/default/topic/978833/opengl/-bug-compile-error-quot-non-constant-expression-in-initialization-quot-/

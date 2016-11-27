@@ -1,0 +1,3 @@
+Reported to NVIDIA:
+
+https://devtalk.nvidia.com/default/topic/978834/opengl/-bug-error-quot-too-little-data-in-type-constructor-quot-and-then-fatal-error/

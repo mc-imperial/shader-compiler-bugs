@@ -1,0 +1,3 @@
+Filed to NVIDIA:
+
+https://devtalk.nvidia.com/default/topic/978839/opengl/-bug-compiler-issues-internal-error-quot-if-statement-nested-too-deeply-quot-/
