@@ -1,0 +1,5 @@
+Reported to Intel:
+
+https://software.intel.com/en-us/forums/developing-games-and-graphics-on-intel/topic/607206
+
+No comment from them and the problem persists in driver version 20.19.15.4501.

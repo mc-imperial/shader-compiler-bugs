@@ -1,0 +1,5 @@
+Platform:
+
+- Windows 10
+- Intel(R) HD Graphics 520
+- Driver version 20.19.15.4326

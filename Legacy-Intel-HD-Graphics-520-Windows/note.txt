@@ -1,0 +1,3 @@
+This folder records issues that Ally filed during the early stages of
+the project.  They were found via our tool chain at various stages of
+development.

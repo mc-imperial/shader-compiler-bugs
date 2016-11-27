@@ -1,0 +1,2 @@
+Error compiling fragment shader
+ERROR: 0:5: '' : unary '-' not allowed for provided data type
