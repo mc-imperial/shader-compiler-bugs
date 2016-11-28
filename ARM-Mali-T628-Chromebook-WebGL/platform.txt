@@ -1,0 +1,4 @@
+Chrome OS
+Version: 54.0.2840.101
+Platform: 8743.85.0 (Official Build) stable-channel peach_pit
+Firmware: Google_Peach_Pit.4482.95.0
