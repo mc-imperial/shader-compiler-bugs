@@ -1,8 +1,12 @@
 The full OS and plaform details are in `client_stripped.json`.
 
-Note: Both shaders should render a "space scene" image, but neither do this.
-However, at the very least, both images should look the same,
-which they do not.
+Note: Both shaders should render a "space scene" image.
+See `actual.png` which is `recipient_reduced_final.frag` rendered using an Intel GPU.
+On the HTC One M7, we just get a red image.
+However, at the very least, both `recipient_reduced_final.frag`
+and `variant_*.frag` should look the same, but they do not.
+The `libgdx-get-image` tool mentioned below is also available for desktops/laptops
+for comparison.
 
 # Steps to reproduce on Android: 
 
@@ -36,5 +40,5 @@ I.e. the addition should have no effect.
 # Actual Results:
 The shaders render significantly different images, which they should not.
 See the included screenshots.
-The recipient is gives a red image. The variant gives a black image.
+The recipient gives a red image. The variant gives a black image.
 
