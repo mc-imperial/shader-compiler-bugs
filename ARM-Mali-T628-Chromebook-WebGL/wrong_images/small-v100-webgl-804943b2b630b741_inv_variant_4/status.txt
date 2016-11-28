@@ -1,0 +1,5 @@
+Reported to ARM:
+
+https://community.arm.com/message/39845
+
+They have responded to say they will investigate.
