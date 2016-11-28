@@ -135,8 +135,7 @@ void main(void)
             if(d < 0.001)
                 {
                     break;
-                    if (injectionSwitch.x > injectionSwitch.y)
-                        discard;
+                    discard;
                 }
             if(total_d > MAX_DISTANCE)
                 {
