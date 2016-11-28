@@ -61,7 +61,7 @@ void main()
     if (injectionSwitch.x > injectionSwitch.y)
         {
             if (injectionSwitch.x > injectionSwitch.y)
-		return;
+                return;
             int x = 1;
         }
     float a_xz = 0.9;
@@ -150,8 +150,8 @@ void main()
             backCol2.rgb = backCol2.gbr;
             s += 0.490;
             s3 += 0.490;
-	    if (injectionSwitch.x > injectionSwitch.y)
-		break;
+            if (injectionSwitch.x > injectionSwitch.y)
+                break;
         }
     v = mix(vec3(length(v)), v, 0.800);
     vec4 forCol2 = vec4(v * .01, 1.);

@@ -29,10 +29,10 @@ vec2 ObjUnion(in vec2 obj0, in vec2 obj1)
 {
     if(obj0.x < 0.2)
         {
-	    for( int i = 0; i < 105; i ++)
-		for( int j = 0; j < 10; j ++)
-		    {
-		    }
+            for( int i = 0; i < 105; i ++)
+                for( int j = 0; j < 10; j ++)
+                    {
+                    }
             return obj0;
         }
     else
@@ -90,7 +90,7 @@ void main(void)
     vec3 vpn = normalize(vrp - prp);
     vec3 u = normalize(cross(vuv, vpn));
     if (injectionSwitch.x > injectionSwitch.y)
-	return;
+        return;
     vec3 v = cross(vpn, u);
     vec3 vcv = (prp + vpn);
     vec3 scrCoord = vcv + vPos.x * u * resolution.x / resolution.y + vPos.y * v;
@@ -109,7 +109,7 @@ void main(void)
             if(abs(s.x) < .01 || f > maxd)
                 {
                     if (injectionSwitch.x > injectionSwitch.y)
-			continue;
+                        continue;
                     break;
                 }
             f += s.x;
