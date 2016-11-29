@@ -12,7 +12,7 @@
 3. Execute `get_image.exe variant.frag --persist`. Observe the rendered image.
 
 # Expected Results:
-Both shaders should render an image that looks like `recipient.png`. 
+Both shaders should render an image that looks like `original.png`. 
 This is because the only difference between the .frag files is:
 
 * An unreachable return statement and an unreachable discard statement are added to the variant. 
