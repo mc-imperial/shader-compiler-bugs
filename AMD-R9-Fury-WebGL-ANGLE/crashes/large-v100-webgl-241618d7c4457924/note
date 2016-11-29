@@ -1,0 +1,7 @@
+On AMD R9 Fury Windows10, via the browser, crashes the driver every time and hangs the browser. After force-closing the browser and trying to render again, leads to a blue-screen. Via GetImageAngle, leads to blue-screen every time, on the first try.
+
+Comparison with other setups:
+	* AMD R9 Fury - Windows 10   - get_image : crashes display driver everytime, hangs the application; application can be safely force-closed without any observable effects
+	* AMD R7      - Ubuntu 16.04 - WebGL     : hangs the system a few minutes, then displays the image
+	* AMD R7      - Ubuntu 16.04 - get_image : hangs the system a few minutes, then displays the image
+		> NOTE: the Ubuntu system seems to become unstable after rendering this shader, leading to hangs at various times
