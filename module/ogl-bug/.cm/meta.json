@@ -1,0 +1,41 @@
+{
+  "actions": {
+    "dashboard": {
+      "desc": "show OpenCL bugs dashboard",
+      "for_web": "yes"
+    },
+    "show": {
+      "desc": "show bugs",
+      "for_web": "yes"
+    }
+   },
+  "external_html": {
+    "action": "show", 
+    "crowd_key": "ck_ogl_testing_", 
+    "module_uoa": "46a99bc558962ca3"
+  }, 
+  "copyright": " ",
+  "desc": "CK wrapper for OpenGL bug reports from Imperial",
+  "developer": "Grigori Fursin",
+  "developer_email": "grigori@dividiti.com",
+  "developer_webpage": "",
+  "license": " ",
+  "module_deps": {
+    "env": "9b9b3208ac44b891",
+    "graph": "2d41f89bcf32d4d4",
+    "platform": "707ccdfe444cafac",
+    "program": "b0ac08fe1d3c2615",
+    "result": "4cd2850867df4241",
+    "results": "4cd2850867df4241",
+    "wfe": "1e4e644996b7f2a0"
+  },
+  "priority": 9, 
+  "program_tags": "crowd-benchmarking,tensorflow", 
+  "tags": [
+    "crowdsource", 
+    "experiments", 
+    "program benchmarking", 
+    "program optimization", 
+    "tensorflow"
+  ]
+}

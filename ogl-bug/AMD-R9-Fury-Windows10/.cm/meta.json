@@ -1,0 +1,16 @@
+{
+  "meta":{
+   "gpu_name":"AMD-R9",
+   "plat_name":"",
+   "os_name":"Windows 10"
+  },
+  "platform_info": {
+	"GL_VERSION" : "4.5.14009 Compatibility Profile Context 21.19.151.3",
+	"GL_MAJOR_VERSION" : "4",
+	"GL_MINOR_VERSION" : "5",
+	"GL_SHADING_LANGUAGE_VERSION" : "4.50",
+	"GL_VENDOR" : "ATI Technologies Inc.",
+	"GL_RENDERER" : "AMD Radeon (TM) R9 Fury Series",
+	"Supported_GLSL_versions" : ["430 core", "430 compatibility", "420 core", "420 compatibility", "410 core", "410 compatibility", "400 core", "400 compatibility", "330 core", "330 compatibility", "150 core", "150 compatibility", "140", "130", "120", "110", "100"]
+  }
+}
