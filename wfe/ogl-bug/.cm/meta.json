@@ -1,0 +1,29 @@
+{
+  "top_menu": [
+    {
+      "module_uoa": "", 
+      "module_uoas": [
+        ""
+      ], 
+      "url_extra": "action=index&module_uoa=wfe&native_action=show&native_module_uoa=46a99bc558962ca3", 
+      "native_module_uoa":"46a99bc558962ca3",
+      "native_action":"show",
+      "default":"yes",
+      "name": "OpenGL bug dashboard"
+    }, 
+    {
+      "url_extra": "wcid=ogl-bug:*", 
+      "module_uoa": "ogl-bug", 
+      "module_uoas": [
+        "ogl-bug"
+      ], 
+      "name": "Browse raw OpenGL bugs"
+    }, 
+    {
+      "name": "Get repository from GitHub", 
+      "url": "https://github.com/mc-imperial/shader-compiler-bugs",
+      "new_window":"yes"
+    }
+  ],
+  "extra_html_after_menu":""
+}
