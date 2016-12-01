@@ -15,5 +15,5 @@ Both shaders should render an image that looks like `recipient_reduced_final.png
 
 # Actual Results:
 The shaders render significantly different images, which they should not.
-The variant image is mostly transparent.
+The variant image is mostly transparent garbage.
 

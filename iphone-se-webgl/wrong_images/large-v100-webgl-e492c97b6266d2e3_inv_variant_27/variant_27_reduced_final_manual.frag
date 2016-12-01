@@ -1,5 +1,4 @@
 #version 100
-//WebGL
 
 #ifdef GL_ES
 precision mediump float;
