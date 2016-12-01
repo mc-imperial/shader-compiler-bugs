@@ -1,8 +1,8 @@
 # Steps to reproduce on Windows: 
 
 1. Obtain the latest release of `get-image` from:
-   https://github.com/paulthomson/get-image/releases
-   E.g. [This version](https://github.com/paulthomson/get-image/releases/tag/v-feb357fccce0694585b02484defc825778733751).
+   https://github.com/mc-imperial/get-image/releases
+   E.g. [This version](https://github.com/mc-imperial/get-image/releases/tag/v-f2328689086208e5ab6978b93cca325253dcd69a).
    The `get_image.exe` binary is in `bin/Windows`.
    Ensure the binary is in the current directory or on your PATH.
    Alternatively, use some other method for observing the effect of a fragment shader.
