@@ -11,7 +11,7 @@ The fragment shader should compile. It is valid according to glslangValidator.
 
 # Actual Results:
 Failed to compile fragment shader.
-ERROR: 0:4: Expression of type 'vec2' - precision can not be inferred and no default precision available
-ERROR: 0:5: Expression of type 'vec3' - precision can not be inferred and no default precision available
-ERROR: 0:6: Expression of type 'vec4' - precision can not be inferred and no default precision available
+ERROR: 0:2: Expression of type 'vec2' - precision can not be inferred and no default precision available
+ERROR: 0:3: Expression of type 'vec3' - precision can not be inferred and no default precision available
+ERROR: 0:4: Expression of type 'vec4' - precision can not be inferred and no default precision available
 
