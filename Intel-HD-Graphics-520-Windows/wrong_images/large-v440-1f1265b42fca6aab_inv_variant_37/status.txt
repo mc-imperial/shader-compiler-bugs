@@ -1,0 +1,3 @@
+Found using driver version 20.19.15.4501
+
+Fixed (before reporting) in driver version 21.20.16.4542

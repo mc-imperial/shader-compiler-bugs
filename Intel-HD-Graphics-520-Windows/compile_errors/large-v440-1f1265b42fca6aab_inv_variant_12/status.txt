@@ -1,3 +1,5 @@
 Reported:
 
 https://software.intel.com/en-us/forums/graphics-driver-bug-reporting/topic/703553
+
+Fixed in driver version 21.20.16.4542
