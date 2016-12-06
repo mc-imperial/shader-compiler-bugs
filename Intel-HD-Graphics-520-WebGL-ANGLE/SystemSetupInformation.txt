@@ -17,3 +17,4 @@ Operating System: Windows 10
 OS Version: Pro
 API: WebGL 1.0 (OpenGL ES 2.0 Chromium), WebGL vendor: Google Inc., WebGL renderer: ANGLE (Intel(R) HD Graphics 520 Direct3D11 vs_5_0 ps_5_0), broswer version: Google Chrome Version 54.0.2840.99 m (64-bit)
 Occurs on non-Intel GPUs?: Haven't tried
+
