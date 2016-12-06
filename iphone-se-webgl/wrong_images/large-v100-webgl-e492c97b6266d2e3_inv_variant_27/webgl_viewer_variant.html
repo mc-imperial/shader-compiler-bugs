@@ -1,0 +1,268 @@
+<!doctype html>
+<html>
+<head>
+<title>WebGL Viewer</title>
+<style>
+    #opengl-canvas {
+        border: none;
+    }
+
+    #location, #shader_source, #console {
+        width: 622px;
+        height: 200px;
+        float: left;
+        clear: both;
+        resize: none;
+    }
+
+    button {
+        width: 200px;
+        margin: 0px;
+        float: left;
+        
+    }
+
+    .cell {
+        display: table-cell;
+        vertical-align: top;
+    }
+
+    .shader_location_input {
+        text-align: center;
+    }
+</style>
+<script type="text/javascript">
+
+var globalObject = null;
+var globalCounter = 0;
+
+function stop() {
+  if(globalObject != null) {
+    console.log("Stopping previous render loop.")
+    var g = globalObject;
+    globalObject = null;
+    g.running = false;
+    g.gl.clear(g.gl.COLOR_BUFFER_BIT);
+  }
+}
+
+function startSafe() {
+  try {
+    document.getElementById("console").value = "";
+    start();
+  } catch(e) {
+    document.getElementById("console").value = e;
+  }
+}
+
+function start() {
+  var vertexShaderSource = "#version 100\nattribute vec2 aVertexPosition; void main(void) { gl_Position = vec4(aVertexPosition, 1.0, 1.0); }";
+  var fragmentShaderSource = document.getElementById("shader_source").value;;
+
+  var vertices = [
+    -1.0,  1.0,
+    -1.0, -1.0,
+     1.0, -1.0,
+     1.0,  1.0
+  ];
+
+  var indicies = [
+    0, 1, 2,   2, 3, 0
+  ];
+  
+  stop();
+  console.log("Start");
+  
+  // WebGL
+  var canvas = document.getElementById("opengl-canvas");
+  var gl = null;
+  try {
+    gl = canvas.getContext("experimental-webgl");
+  }
+  catch(e) {
+  }
+  if (!gl) {
+    throw "Failed to initialize WebGL.";
+  }
+
+  // vertex shader
+  var vertexShader = gl.createShader(gl.VERTEX_SHADER);
+  gl.shaderSource(vertexShader, vertexShaderSource);
+  gl.compileShader(vertexShader);
+  if (!gl.getShaderParameter(vertexShader, gl.COMPILE_STATUS)) {
+    throw "Failed to compile vertex shader.\n" + gl.getShaderInfoLog(vertexShader);
+  }
+
+  // fragment shader
+  var fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
+  gl.shaderSource(fragmentShader, fragmentShaderSource);
+  gl.compileShader(fragmentShader);
+  if (!gl.getShaderParameter(fragmentShader, gl.COMPILE_STATUS)) {
+    throw "Failed to compile fragment shader.\n" + gl.getShaderInfoLog(fragmentShader);
+  }
+
+  // shader program
+  var shaderProgram = gl.createProgram();
+  gl.attachShader(shaderProgram, vertexShader);
+  gl.attachShader(shaderProgram, fragmentShader);
+  gl.linkProgram(shaderProgram);
+  if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
+    throw "Failed to link shader program.\n" + gl.getProgramInfoLog(shaderProgram);
+  }
+  gl.useProgram(shaderProgram);
+  
+  var vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aVertexPosition");
+  gl.enableVertexAttribArray(vertexPositionAttribute);
+
+  var verticesBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, verticesBuffer);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+
+  var indiciesBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indiciesBuffer);
+  gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indicies), gl.STATIC_DRAW);
+
+  trySetUniform2f(gl, shaderProgram, "injectionSwitch", 0.0, 1.0);
+  trySetUniform1f(gl, shaderProgram, "time", 0.0);
+  trySetUniform2f(gl, shaderProgram, "mouse", 0.0, 0.0);
+  trySetUniform2f(gl, shaderProgram, "resolution", canvas.width, canvas.height);
+  
+  globalObject = { running : true, id : globalCounter, gl : gl };
+  globalCounter += 1;
+
+  var globalObjectRef = globalObject;
+
+  gl.bindBuffer(gl.ARRAY_BUFFER, verticesBuffer);
+  gl.vertexAttribPointer(vertexPositionAttribute, 2, gl.FLOAT, false, 0, 0);
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indiciesBuffer);
+
+  var drawFunction = function(now) {
+
+    if(!globalObjectRef.running) return;
+
+    gl.clearColor(0.0, 0.0, 0.0, 1.0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    
+    gl.drawElements(gl.TRIANGLES, 6, gl.UNSIGNED_SHORT, 0);
+
+    requestAnimationFrame(drawFunction);
+  };
+  
+  requestAnimationFrame(drawFunction);
+
+}
+
+function trySetUniform1f(gl, shaderProgram, name, x) {
+  var loc = gl.getUniformLocation(shaderProgram, name);
+  if (loc != null) {
+    gl.uniform1f(loc, x);
+  }
+}
+
+function trySetUniform2f(gl, shaderProgram, name, x, y) {
+  var loc = gl.getUniformLocation(shaderProgram, name);
+  if (loc != null) {
+    gl.uniform2f(loc, x, y);
+  }
+}
+
+</script>
+</head>
+<body onload="setTimeout(startSafe, 1000)">
+<div class="grid">
+  <div class="row">
+    <div class="cell">
+      <canvas id="opengl-canvas" style="border: none;" width="640" height="480"></canvas>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="cell shader_location_input">
+      <textarea id="shader_source" placeholder="Source of fragment shader">
+#version 100
+
+#ifdef GL_ES
+precision mediump float;
+#endif
+
+uniform vec2 injectionSwitch;
+
+uniform vec2 resolution;
+
+uniform vec2 mouse;
+
+uniform float time;
+
+struct Ray {
+    vec3 o;
+    vec3 d;
+};
+float mandelbulb(in vec3 p, float power)
+{
+    float dr = 1.0;
+    float r = length(p);
+    vec3 c = p;
+    for(
+        int i = 0;
+        i < 2;
+        i ++
+    )
+        {
+            float zo0 = asin(p.z / r);
+            float zi0 = atan(p.y, p.x);
+            float zr = pow(r, power - 1.0);
+            float zo = (zo0) * power;
+            float zi = (zi0) * power;
+            float czo1 = cos(zo);
+            float czo2 = cos(zo * 5.) + cos(zi * 5.);
+            float czo = mix(czo1, czo2, mouse.x);
+            dr = zr * dr * power + 1.0;
+            zr *= r;
+            p = zr * vec3(czo * cos(zi), czo * sin(zi), sin(zo));
+            p += c;
+            r = length(p);
+        }
+    return 0.5 * r * log(r) / r;
+}
+void main()
+{
+    if(injectionSwitch.x > injectionSwitch.y)
+        {
+            return;
+        }
+    vec2 p = ((gl_FragCoord.xy / resolution.xy) * 2.0 - 1.0) * 3.5;
+    vec2 p1 = p / length(sin(p * (15.0 - mouse.x * 15.)));
+    p = mix(p, p1, mouse.y);
+    float t = time;
+    Ray ray1;
+    ray1.o = vec3(0.0);
+    ray1.d = normalize(vec3((p - 1.5 * vec2(sin(t - 2.0), cos(t + 1.0))) * vec2(resolution.x / resolution.y, 1.0), 1.0));
+    Ray ray2;
+    ray2.o = vec3(0.0);
+    ray2.d = normalize(vec3((p - 1.5 * vec2(cos(- t), sin(t))) * vec2(resolution.x / resolution.y, 1.0), 1.0));
+    ray1.d.xy = vec2(ray1.d.x * cos(t) - ray1.d.y * sin(t), ray1.d.x * sin(t) + ray1.d.y * cos(t));
+    ray2.d.xy = vec2(ray2.d.x * cos(t) - ray2.d.y * sin(t), ray2.d.x * sin(t) + ray2.d.y * cos(t));
+    float m1 = mandelbulb(ray1.o + ray1.d, abs(cos(t) * 13.0));
+    float m2 = mandelbulb(ray2.o + ray2.d, abs(sin(t) * 13.0));
+    float f = pow(max(m1, m2), abs(m1 - m2));
+    vec3 c = m1 > m2 ? vec3(0.0, 0.05, 0.2) : vec3(0.2, 0.05, 0.0);
+    if(injectionSwitch.x > injectionSwitch.y)
+        {
+            return;
+        }
+    gl_FragColor = vec4(c * f, 1.0);
+}
+</textarea>
+      <div>
+        <button id="start" title="Starts rendering fragment shader" onclick="startSafe()">Start rendering (Execute)</button>
+        <button id="stop" title="Stops rendering" onclick="stop()">Stop rendering</button>
+      </div>
+      <textarea id="console" placeholder="Shader compilation output" readonly></textarea>
+    </div>
+    
+  </div>
+</div>
+</div>
+</body>
+</html>
+
