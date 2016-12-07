@@ -59,8 +59,8 @@ void main()
             v1 += dot(p, p) * .0015 * (2.8 + sin(length(uv.xy * 18.0) + .5 - t * .7));
             v2 += dot(p, p) * .0025 * (1.5 + sin(length(uv.xy * 13.5) + 1.21 - t * .3));
             c = length(p.xy * .3) * .85;
-			// Changing -44252 to -1 makes the problem disappear
-            for(int k = 0; k < -44252; k ++) {
+			// Works if 2000 is changed to 1000
+            for(int k = 0; k < 2000; k ++) {
             }
         }
     float len = length(uv);
