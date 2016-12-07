@@ -1,0 +1,4 @@
+This looks very simiar to
+small-v100-webgl-804943b2b630b741_inv_variant_4 - the original shaders
+are almost the same and in both cases it is the original that is
+wrongly rendered.  So not reporting to ARM.

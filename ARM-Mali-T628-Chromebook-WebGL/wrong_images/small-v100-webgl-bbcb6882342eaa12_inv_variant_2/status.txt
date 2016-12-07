@@ -1,0 +1,3 @@
+This does not look like a bug, it looks like a precision issue.  This
+shader seems to be very sensitive to precision issues - we've seen
+them on multiple platforms for the shader.
