@@ -1,0 +1,43 @@
+Steps to Reproduce:
+-------------------------------
+
+1. Obtain the latest release of get-image, a simple tool that creates
+   a .png image from a fragment shader (alternatively, use some other
+   method observing the effect of a fragment shader)
+
+2. From a command prompt, execute:
+
+   C:\path\to\get_image\bin\Windows\get_image.exe recipient_reduced_final.frag
+
+   This will create output.png, which should look like expected.png
+
+3. From a command prompt, execute:
+
+   C:\path\to\get_image\bin\Windows\get_image.exe variant_52_reduced_29_simplified.frag
+
+   This will create output.png, which should look like actual.png
+
+Expected Results:
+-------------------------------
+Both shaders should render an image that looks like expected.png.  This is because the only difference between the .frag files is:
+
+- Statement
+
+    return ObjUnion(obj0(p), obj1(p));
+
+  has been replaced with
+
+    return ObjUnion(obj0(p + vec3(0.0, injectionSwitch.x, 0.0)), obj1(p));
+
+  in variant_52_reduced_29_simplified.frag
+
+  Because injectionSwitch.x is set to 0.0, this should not have an effect.
+
+
+Actual Results:
+-------------------------------
+The shaders render completely different images, which they should not.
+
+Additional Information:
+-------------------------------
+N/A
