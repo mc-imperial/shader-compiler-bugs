@@ -1,6 +1,10 @@
 #version 100
 //WebGL
 
+#ifdef GL_ES
+precision mediump float;
+#endif
+
 uniform vec2 injectionSwitch;
 
 uniform float time;
