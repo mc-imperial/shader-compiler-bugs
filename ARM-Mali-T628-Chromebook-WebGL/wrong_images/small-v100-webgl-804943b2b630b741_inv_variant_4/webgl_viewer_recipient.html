@@ -169,38 +169,24 @@ function trySetUniform2f(gl, shaderProgram, name, x, y) {
 </script>
 </head>
 <body onload="setTimeout(startSafe, 1000)">
-Check out our medium post about this issue <a href="https://medium.com/@afd_icl/bugs-can-be-beautiful-65b93c5c58f9">here</a>.
+<p>Check out our medium post about this issue <a href="https://medium.com/@afd_icl/bugs-can-be-beautiful-65b93c5c58f9">here</a>.</p>
 <div class="grid">
   <div class="row">
     <div class="cell">
       <canvas id="opengl-canvas" style="border: none;" width="640" height="480"></canvas>
     </div>
   </div>
-
+  <p>This shader looks incorrect on some ARM GPUs. The injection that suppresses this bug is included in a comment.</p>
+  <p>Search for "workaround:" and click Execute after making the change. Or, view the "fixed" version <a href="webgl_viewer_variant.html">here</a>.</p>
   <div class="row">
     <div class="cell shader_location_input">
       <textarea id="shader_source" placeholder="Source of fragment shader">
-#version 100
-//WebGL
-
 #ifdef GL_ES
 precision mediump float;
 #endif
 
-#ifndef REDUCER
-#define _GLF_ZERO(X, Y)          (Y)
-#define _GLF_ONE(X, Y)           (Y)
-#define _GLF_FALSE(X, Y)         (Y)
-#define _GLF_TRUE(X, Y)          (Y)
-#define _GLF_IDENTITY(X, Y)      (Y)
-#define _GLF_DEAD(X)             (X)
-#define _GLF_FUZZED(X)           (X)
-#define _GLF_WRAPPED_LOOP(X)     X
-#define _GLF_WRAPPED_IF_TRUE(X)  X
-#define _GLF_WRAPPED_IF_FALSE(X) X
-#endif
-
-// END OF GENERATED HEADER
+// injected:
+uniform vec2 injectionSwitch;
 
 uniform float time;
 
@@ -214,6 +200,8 @@ float smin(float a, float b, float k)
 {
     float res = exp(- k * a) + exp(- k * b);
     return - log(res) / k;
+    // workaround: replace above return with:
+    // return - log(res) / (injectionSwitch.x > injectionSwitch.y ? 1.0 : k);
 }
 float sdBox(vec3 p, vec3 b)
 {
