@@ -4,23 +4,6 @@
 precision mediump float;
 #endif
 
-#ifndef REDUCER
-#define _GLF_ZERO(X, Y)          (Y)
-#define _GLF_ONE(X, Y)           (Y)
-#define _GLF_FALSE(X, Y)         (Y)
-#define _GLF_TRUE(X, Y)          (Y)
-#define _GLF_IDENTITY(X, Y)      (Y)
-#define _GLF_DEAD(X)             (X)
-#define _GLF_FUZZED(X)           (X)
-#define _GLF_WRAPPED_LOOP(X)     X
-#define _GLF_WRAPPED_IF_TRUE(X)  X
-#define _GLF_WRAPPED_IF_FALSE(X) X
-#endif
-
-// END OF GENERATED HEADER
-
-uniform vec2 injectionSwitch;
-
 uniform float t;
 
 uniform vec2 r;
@@ -34,6 +17,14 @@ struct Ray {
     vec3 origin;
     vec3 ndir;
 };
+Coord makeBasis(vec3 y, vec3 up)
+{
+    Coord coord;
+    coord.ny = normalize(y);
+    coord.nz = normalize(up - y * dot(up, y));
+    coord.nx = cross(coord.ny, coord.nz);
+    return coord;
+}
 struct Sphere {
     vec3 center;
     float radius;
@@ -44,22 +35,6 @@ struct Intersection {
 };
 Sphere SPHERE_OBJECTS[2];
 
-const float FILM_WIDTH = 1000.0;
-
-const vec3 FILM_CENTER = vec3(0, 0, 0);
-
-const vec3 VIEW_FROM = vec3(0, - 100, 0);
-
-const vec3 UP_VECTOR = vec3(0, 0, 1);
-
-Coord makeBasis(vec3 y, vec3 up)
-{
-    Coord coord;
-    coord.ny = normalize(y);
-    coord.nz = normalize(up - y * dot(up, y));
-    coord.nx = cross(coord.ny, coord.nz);
-    return coord;
-}
 Intersection testIntersection(in Sphere sphere, in Ray ray)
 {
     vec3 H = ray.origin + ray.ndir * (ray.ndir , sphere.center - ray.origin);
@@ -88,13 +63,21 @@ Intersection testIntersection(in Sphere sphere, in Ray ray)
 }
 vec4 trace(Ray ray)
 {
-    Intersection isec = testIntersection(SPHERE_OBJECTS[((((injectionSwitch.x < injectionSwitch.y)) ? 0 : (ivec2(1)[0])))], ray);
+    Intersection isec = testIntersection(SPHERE_OBJECTS[0], ray);
     if(isec.hit)
         {
             return vec4(0, 0, 0.4, 1);
         }
     return vec4(0, 0, 0, 1);
 }
+const float FILM_WIDTH = 1000.0;
+
+const vec3 FILM_CENTER = vec3(0, 0, 0);
+
+const vec3 VIEW_FROM = vec3(0, - 100, 0);
+
+const vec3 UP_VECTOR = vec3(0, 0, 1);
+
 void main(void)
 {
     SPHERE_OBJECTS[0] = Sphere(vec3(0, 0, 0), 1.0);
