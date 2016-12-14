@@ -25,7 +25,7 @@ uniform vec2 resolution;
 
 vec3 hsbToRGB(float h, float s, float b)
 {
-    return b * (1.0 - s) + (b - b * (1.0 - ((true ? s : (dot(mod(vec3(1.0, 2.3, 1.0), vec3(1.0)), vec3(1.0))))))) * clamp(abs(abs(6.0 * (h - vec3(0, 1, 2) / 3.0)) - 3.0) - ((false ? (distance(mat2x3(1.0)[0], vec3(1.0))) : 1.0)), 0.0, ((true ? 1.0 : (determinant(mat4(1.0))))));
+    return b * (1.0 - s) + (b - b * (1.0 - ((true ? s : (mod(vec3(1.0), vec3(1.0)).x))))) * clamp(abs(abs(6.0 * (h - vec3(0, 1, 2) / 3.0)) - 3.0) - ((false ? (distance(vec3(1.0), vec3(1.0))) : 1.0)), 0.0, ((true ? 1.0 : (determinant(mat4(1.0))))));
 }
 vec3 colorFunc(float h)
 {
