@@ -4,21 +4,6 @@
 precision mediump float;
 #endif
 
-#ifndef REDUCER
-#define _GLF_ZERO(X, Y)          (Y)
-#define _GLF_ONE(X, Y)           (Y)
-#define _GLF_FALSE(X, Y)         (Y)
-#define _GLF_TRUE(X, Y)          (Y)
-#define _GLF_IDENTITY(X, Y)      (Y)
-#define _GLF_DEAD(X)             (X)
-#define _GLF_FUZZED(X)           (X)
-#define _GLF_WRAPPED_LOOP(X)     X
-#define _GLF_WRAPPED_IF_TRUE(X)  X
-#define _GLF_WRAPPED_IF_FALSE(X) X
-#endif
-
-// END OF GENERATED HEADER
-
 uniform vec2 resolution;
 
 uniform float time;
@@ -42,6 +27,22 @@ vec3 mix_Repetition(vec3 p, vec3 c)
 }
 float distance_function(in vec3 x)
 {
+    {
+        for(
+            int GLF_live13r = 0;
+            GLF_live13r < 12;
+            GLF_live13r ++
+        )
+            {
+                for(
+                    int GLF_live13i = 0;
+                    GLF_live13i < 15;
+                    GLF_live13i ++
+                )
+                    {
+                    }
+            }
+    }
     return sdTorus(x + vec3(0.0, 0.0, - .5), vec2(0.3, 0.2));
     return mix_Union(sdSphere(mix_Repetition(x, vec3(3.0)), 0.1), sdTorus(x - 1.0, vec2(0.1)));
 }

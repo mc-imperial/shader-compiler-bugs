@@ -4,20 +4,7 @@
 precision mediump float;
 #endif
 
-#ifndef REDUCER
-#define _GLF_ZERO(X, Y)          (Y)
-#define _GLF_ONE(X, Y)           (Y)
-#define _GLF_FALSE(X, Y)         (Y)
-#define _GLF_TRUE(X, Y)          (Y)
-#define _GLF_IDENTITY(X, Y)      (Y)
-#define _GLF_DEAD(X)             (X)
-#define _GLF_FUZZED(X)           (X)
-#define _GLF_WRAPPED_LOOP(X)     X
-#define _GLF_WRAPPED_IF_TRUE(X)  X
-#define _GLF_WRAPPED_IF_FALSE(X) X
-#endif
-
-// END OF GENERATED HEADER
+uniform vec2 injectionSwitch;
 
 uniform float time;
 
@@ -46,7 +33,7 @@ float rand12(vec2 p)
 }
 vec2 rand21(float p)
 {
-    return fract(vec2(tan(p * 191.32), cos(p * 391.32)));
+    return fract(vec2(tan(p * 191.32), cos(p * ((391.32) * (injectionSwitch.y)))));
 }
 vec2 rand22(in vec2 p)
 {
@@ -213,12 +200,16 @@ void main(void)
                     pp.y += time * spd;
                     pp += (rand21(id) * 2.0 - 1.0) * vec2(0.3, 1.0);
                     float rep = rand11(id) + 1.5;
-                    pp.y = mod(pp.y, rep * 2.0) - rep;
-                    float d = box(pp, vec2(0.02, 0.3), 0.1);
+                    pp.y = mod(pp.y, rep * 2.0) - ((rep) + (injectionSwitch.x));
+                    float d = box(pp, vec2(0.02, 0.3), ((((injectionSwitch.x > injectionSwitch.y)) ? (dot(vec2(1.0), (time + vec2(626.459, 1.0)))) : 0.1)));
                     float foc = 0.0;
                     float v = 1.0 - smoothstep(0.0, 0.03, abs(d) - 0.001);
                     float g = min(exp(d * - 20.0), 2.0);
                     inten += (v + g * 0.7) * 0.5;
+                    if(((injectionSwitch.x > injectionSwitch.y)))
+                        {
+                            return;
+                        }
                 }
         }
     inten *= 0.4 + (sin(time) * 0.5 + 0.5) * 0.6;
