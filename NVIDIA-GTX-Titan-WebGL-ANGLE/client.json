@@ -1,0 +1,20 @@
+{
+  "platform_info": {
+    "clientplatform": "webgl",
+    "appCodeName": "Mozilla",
+    "appName": "Netscape",
+    "appVersion": "5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36",
+    "platform": "Linux x86_64",
+    "product": "Gecko",
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36",
+    "vendor": "Google Inc.",
+    "vendorSub": "",
+    "GL_VERSION": "WebGL 1.0 (OpenGL ES 2.0 Chromium)",
+    "GL_SHADING_LANGUAGE_VERSION": "WebGL GLSL ES 1.0 (OpenGL ES GLSL ES 1.0 Chromium)",
+    "GL_VENDOR": "WebKit",
+    "GL_RENDERER": "WebKit WebGL",
+    "UNMASKED_VENDOR_WEBGL": "NVIDIA Corporation",
+    "UNMASKED_RENDERER_WEBGL": "GeForce GTX TITAN/PCIe/SSE2",
+    "Antialiasing": true
+  }
+}
