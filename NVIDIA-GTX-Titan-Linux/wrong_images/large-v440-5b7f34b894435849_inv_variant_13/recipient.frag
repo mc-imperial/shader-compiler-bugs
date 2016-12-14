@@ -4,21 +4,6 @@
 precision mediump float;
 #endif
 
-#ifndef REDUCER
-#define _GLF_ZERO(X, Y)          (Y)
-#define _GLF_ONE(X, Y)           (Y)
-#define _GLF_FALSE(X, Y)         (Y)
-#define _GLF_TRUE(X, Y)          (Y)
-#define _GLF_IDENTITY(X, Y)      (Y)
-#define _GLF_DEAD(X)             (X)
-#define _GLF_FUZZED(X)           (X)
-#define _GLF_WRAPPED_LOOP(X)     X
-#define _GLF_WRAPPED_IF_TRUE(X)  X
-#define _GLF_WRAPPED_IF_FALSE(X) X
-#endif
-
-// END OF GENERATED HEADER
-
 uniform float time;
 
 uniform vec2 resolution;

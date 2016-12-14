@@ -4,21 +4,6 @@
 precision mediump float;
 #endif
 
-#ifndef REDUCER
-#define _GLF_ZERO(X, Y)          (Y)
-#define _GLF_ONE(X, Y)           (Y)
-#define _GLF_FALSE(X, Y)         (Y)
-#define _GLF_TRUE(X, Y)          (Y)
-#define _GLF_IDENTITY(X, Y)      (Y)
-#define _GLF_DEAD(X)             (X)
-#define _GLF_FUZZED(X)           (X)
-#define _GLF_WRAPPED_LOOP(X)     X
-#define _GLF_WRAPPED_IF_TRUE(X)  X
-#define _GLF_WRAPPED_IF_FALSE(X) X
-#endif
-
-// END OF GENERATED HEADER
-
 uniform vec2 injectionSwitch;
 
 uniform float time;
@@ -29,16 +14,6 @@ const float EPS = 0.01;
 
 const int MAXI = 100;
 
-struct HitObject {
-    float distance;
-    vec3 color;
-    vec3 hitPos;
-};
-float hash(float x);
-float SineApproximation_Try7(float x)
-{
-    return 1.0 / 1.0;
-}
 float hash(float x)
 {
     return fract(sin(x) * 43758.5453);
@@ -60,6 +35,11 @@ float perlinNoise(vec2 uv)
     noiseVal = abs(noiseVal * 2.0 - 1.0);
     return noiseVal;
 }
+struct HitObject {
+    float distance;
+    vec3 color;
+    vec3 hitPos;
+};
 mat4 Transpose(mat4 m)
 {
     mat4 t = mat4(vec4(m[0][0], m[1][0], m[2][0], m[3][0]), vec4(m[0][1], m[1][1], m[2][1], m[3][1]), vec4(m[0][2], m[1][2], m[2][2], m[3][2]), vec4(m[0][3], m[1][3], m[2][3], m[3][3]));
@@ -115,15 +95,7 @@ HitObject Scene(vec3 ray)
     transform = mat4(vec4(1, 0, 0, 0), vec4(0, 1, 0, - 0.0), vec4(0, 0, 1, 0), vec4(0, 0, 0, 1));
     if(((injectionSwitch.x > injectionSwitch.y)))
         {
-            vec2 donor_replacementrez = vec2(1.0);
-            float donor_replacementtime = 1.0;
-            vec2 donor_replacementfc = vec2(1.0);
-            {
-                float x = donor_replacementfc.x / donor_replacementrez.x + donor_replacementtime / 20., t = 1.0;
-                float s = (SineApproximation_Try7(x * t) * 0.25 + 0.5) * donor_replacementrez.y;
-                float c = (SineApproximation_Try7(x * t + .5) * t) * 0.25 * donor_replacementrez.y / donor_replacementrez.x;
-                ray += (1. - clamp(abs(s - donor_replacementfc.y) / sqrt(1.0 + c * c) - 0.1, 0., 1.)) * vec3(1, 0, 1);
-            }
+            ray += vec3(1, 0, 0);
         }
     HitObject obj2 = Plane(ray, vec4(0.0, - 1.0, 0.0, 0.1), vec3(0.2, 0.4, 0.5), transform);
     return obj2;
