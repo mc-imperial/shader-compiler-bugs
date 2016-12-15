@@ -1,6 +1,11 @@
 The full OS and plaform details are in `client_stripped.json`.
 
+# Steps to reproduce on Android using WebGL
 
+* Open the HTML files. You can open them directly from GitHub:
+    * http://htmlpreview.github.io/?https://github.com/mc-imperial/shader-compiler-bugs/blob/master/samsung-galaxy-s6/wrong_images/large-v100-5647937ed5c44a1a_inv_variant_13/webgl_viewer_recipient.html
+    * http://htmlpreview.github.io/?https://github.com/mc-imperial/shader-compiler-bugs/blob/master/samsung-galaxy-s6/wrong_images/large-v100-5647937ed5c44a1a_inv_variant_13/webgl_viewer_variant.html
+* See below for details.
 
 # Steps to reproduce on Android: 
 
