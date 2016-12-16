@@ -1,0 +1,2 @@
+Failed to compile fragment shader.
+ERROR: 0:74: 'webgl_360c969568c90722' : redefinition 
