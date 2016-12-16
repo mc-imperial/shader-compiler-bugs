@@ -1,0 +1,4 @@
+Failed to compile fragment shader.
+ERROR: 0:76: 'webgl_360c969568c90722' : redefinition 
+ERROR: 0:77: ':' :  wrong operand types  no operation ':' exists that takes a left-hand operand of type 'const int' and a right operand of type 'mediump float' (or there is no acceptable conversion)
+ERROR: 0:77: '==' :  wrong operand types  no operation '==' exists that takes a left-hand operand of type 'mediump int' and a right operand of type 'mediump float' (or there is no acceptable conversion)
