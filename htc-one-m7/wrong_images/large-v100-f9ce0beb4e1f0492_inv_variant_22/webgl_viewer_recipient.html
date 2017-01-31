@@ -1,0 +1,260 @@
+<!doctype html>
+<html>
+<head>
+<title>WebGL Viewer</title>
+<style>
+    #opengl-canvas {
+        border: none;
+    }
+
+    #location, #shader_source, #console {
+        width: 622px;
+        height: 200px;
+        float: left;
+        clear: both;
+        resize: none;
+    }
+
+    button {
+        width: 200px;
+        margin: 0px;
+        float: left;
+        
+    }
+
+    .cell {
+        display: table-cell;
+        vertical-align: top;
+    }
+
+    .shader_location_input {
+        text-align: center;
+    }
+</style>
+<script type="text/javascript">
+
+var globalObject = null;
+var globalCounter = 0;
+
+function stop() {
+  if(globalObject != null) {
+    console.log("Stopping previous render loop.")
+    var g = globalObject;
+    globalObject = null;
+    g.running = false;
+    g.gl.clear(g.gl.COLOR_BUFFER_BIT);
+  }
+}
+
+function startSafe() {
+  try {
+    document.getElementById("console").value = "";
+    start();
+  } catch(e) {
+    document.getElementById("console").value = e;
+  }
+}
+
+function start() {
+  var vertexShaderSource = "#version 100\nattribute vec2 aVertexPosition; void main(void) { gl_Position = vec4(aVertexPosition, 1.0, 1.0); }";
+  var fragmentShaderSource = document.getElementById("shader_source").value;;
+
+  var vertices = [
+    -1.0,  1.0,
+    -1.0, -1.0,
+     1.0, -1.0,
+     1.0,  1.0
+  ];
+
+  var indicies = [
+    0, 1, 2,   2, 3, 0
+  ];
+  
+  stop();
+  console.log("Start");
+  
+  // WebGL
+  var canvas = document.getElementById("opengl-canvas");
+  var gl = null;
+  try {
+    gl = canvas.getContext("experimental-webgl");
+  }
+  catch(e) {
+  }
+  if (!gl) {
+    throw "Failed to initialize WebGL.";
+  }
+
+  // vertex shader
+  var vertexShader = gl.createShader(gl.VERTEX_SHADER);
+  gl.shaderSource(vertexShader, vertexShaderSource);
+  gl.compileShader(vertexShader);
+  if (!gl.getShaderParameter(vertexShader, gl.COMPILE_STATUS)) {
+    throw "Failed to compile vertex shader.\n" + gl.getShaderInfoLog(vertexShader);
+  }
+
+  // fragment shader
+  var fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
+  gl.shaderSource(fragmentShader, fragmentShaderSource);
+  gl.compileShader(fragmentShader);
+  if (!gl.getShaderParameter(fragmentShader, gl.COMPILE_STATUS)) {
+    throw "Failed to compile fragment shader.\n" + gl.getShaderInfoLog(fragmentShader);
+  }
+
+  // shader program
+  var shaderProgram = gl.createProgram();
+  gl.attachShader(shaderProgram, vertexShader);
+  gl.attachShader(shaderProgram, fragmentShader);
+  gl.linkProgram(shaderProgram);
+  if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
+    throw "Failed to link shader program.\n" + gl.getProgramInfoLog(shaderProgram);
+  }
+  gl.useProgram(shaderProgram);
+  
+  var vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aVertexPosition");
+  gl.enableVertexAttribArray(vertexPositionAttribute);
+
+  var verticesBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, verticesBuffer);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+
+  var indiciesBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indiciesBuffer);
+  gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indicies), gl.STATIC_DRAW);
+
+  trySetUniform2f(gl, shaderProgram, "injectionSwitch", 0.0, 1.0);
+  trySetUniform1f(gl, shaderProgram, "time", 0.0);
+  trySetUniform2f(gl, shaderProgram, "mouse", 0.0, 0.0);
+  trySetUniform2f(gl, shaderProgram, "resolution", canvas.width, canvas.height);
+  
+  globalObject = { running : true, id : globalCounter, gl : gl };
+  globalCounter += 1;
+
+  var globalObjectRef = globalObject;
+
+  gl.bindBuffer(gl.ARRAY_BUFFER, verticesBuffer);
+  gl.vertexAttribPointer(vertexPositionAttribute, 2, gl.FLOAT, false, 0, 0);
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indiciesBuffer);
+
+  var drawFunction = function(now) {
+
+    if(!globalObjectRef.running) return;
+
+    gl.clearColor(0.0, 0.0, 0.0, 1.0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    
+    gl.drawElements(gl.TRIANGLES, 6, gl.UNSIGNED_SHORT, 0);
+
+    requestAnimationFrame(drawFunction);
+  };
+  
+  requestAnimationFrame(drawFunction);
+
+}
+
+function trySetUniform1f(gl, shaderProgram, name, x) {
+  var loc = gl.getUniformLocation(shaderProgram, name);
+  if (loc != null) {
+    gl.uniform1f(loc, x);
+  }
+}
+
+function trySetUniform2f(gl, shaderProgram, name, x, y) {
+  var loc = gl.getUniformLocation(shaderProgram, name);
+  if (loc != null) {
+    gl.uniform2f(loc, x, y);
+  }
+}
+
+</script>
+</head>
+<body onload="setTimeout(startSafe, 1000)">
+Check out our medium post about this issue <a href="https://medium.com/@afd_icl/how-to-render-garbage-on-your-iphone-213fb577d67c">here</a>.
+<div class="grid">
+  <div class="row">
+    <div class="cell">
+      <canvas id="opengl-canvas" style="border: none;" width="640" height="480"></canvas>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="cell shader_location_input">
+      <textarea id="shader_source" placeholder="Source of fragment shader">
+#version 100
+
+#ifdef GL_ES
+precision mediump float;
+#endif
+
+uniform float time;
+
+uniform vec2 resolution;
+
+void main(void)
+{
+    vec2 uv = gl_FragCoord.xy / resolution.xy - .5;
+    uv.y *= resolution.y / resolution.x;
+    vec3 dir = vec3(uv * (1.900 * (0.5 + 0.5 * cos(0.1 * time)) + 0.5), 1.);
+    float a2 = - 2.1;
+    float a1 = 0.8;
+    float a3 = 0.03 * time;
+    mat2 rot1 = mat2(cos(a1), sin(a1), - sin(a1), cos(a1));
+    mat2 rot2 = mat2(cos(a2), sin(a2), - sin(a2), cos(a2));
+    mat2 rot3 = mat2(cos(a3), sin(a3), - sin(a3), cos(a3));
+    dir.xy *= rot3;
+    vec3 from = vec3(.3, 0., 0.);
+    from += vec3(.05 * time, .05 * time, - .003 * time);
+    dir -= vec3(0.1 * time, .15 * time, - .003 * time);
+    dir.xz *= rot1;
+    dir.yz *= rot2;
+    from.xz *= rot1;
+    from.yz *= rot2;
+    float s = .4, fade = .2;
+    vec3 v = vec3(0.4);
+    for(
+        int r = 0;
+        r < 8;
+        r ++
+    )
+        {
+            vec3 p = from + s * dir * .5;
+            p = abs(vec3(.850) - mod(p, vec3(.850 * 2.)));
+            float pa, a = pa = 0.;
+            for(
+                int i = 0;
+                i < 14;
+                i ++
+            )
+                {
+                    p = abs(p) / dot(p, p) - .54;
+                    a += abs(length(p) - pa);
+                    pa = length(p);
+                }
+            float dm = max(0., 0.400 - a * a * .001);
+            a *= a * a * 2.;
+            if(r > 3)
+                {
+                    fade *= 1. - dm;
+                }
+            v += fade;
+            v += vec3(s, s * s, s * s * s * s) * a * 0.005 * fade;
+            fade *= 0.560;
+            s += 0.190;
+        }
+    v = mix(vec3(length(v)), v, 0.800);
+    gl_FragColor = vec4(v * .01, 1.);
+}
+</textarea>
+      <div>
+        <button id="start" title="Starts rendering fragment shader" onclick="startSafe()">Start rendering (Execute)</button>
+        <button id="stop" title="Stops rendering" onclick="stop()">Stop rendering</button>
+      </div>
+      <textarea id="console" placeholder="Shader compilation output" readonly></textarea>
+    </div>
+    
+  </div>
+</div>
+</div>
+</body>
+</html>
+
