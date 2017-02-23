@@ -37,4 +37,12 @@ different from the expected one.
 
 Additional Information:
 -------------------------------
-N/A
+Some info on the system where the bug was found:
+
+CPU: Intel(R) Core(TM) i7-2600 CPU @ 3.40GHz
+GPU: "2nd Generation Core Processor Family Integrated Graphics Controller"
+
+OS: Arch Linux: 4.9.6-1-ARCH #1 SMP PREEMPT x86_64 GNU/Linux
+
+Mesa: compiled from 17.0.0 source downloaded from website
+GCC version: gcc (GCC) 6.3.1 20170109
