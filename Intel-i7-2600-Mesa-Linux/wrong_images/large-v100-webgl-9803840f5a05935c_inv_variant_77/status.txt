@@ -1,0 +1,2 @@
+Reported to Mesa, bug 99919
+https://bugs.freedesktop.org/show_bug.cgi?id=99919
