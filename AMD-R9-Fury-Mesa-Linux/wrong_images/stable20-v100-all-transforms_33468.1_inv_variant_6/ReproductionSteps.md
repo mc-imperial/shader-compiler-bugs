@@ -30,6 +30,7 @@ the original code. We control the condition value to make sure it is
 always false at runtime.
 
 Diff:
+```
 27a28,29
 > uniform vec2 injectionSwitch;
 >
@@ -41,6 +42,7 @@ Diff:
 >         {
 129a137
 >         }
+```
 
 The injectionSwitch uniform is always set to { 0.0, 1.0 }. The else
 block contains the original code, untouched.
@@ -54,6 +56,6 @@ Additional Information:
 -------------------------------
 Some info on the system where the bug was found:
 
-CPU: AMD A10-7850K Radeon R7, 12 Compute Cores 4C+8G
-GPU: Advanced Micro Devices, Inc. [AMD/ATI] Tonga PRO [Radeon R9 285/380]
-Mesa: 17.1.0-devel (git-08df015)
+- CPU: AMD A10-7850K Radeon R7, 12 Compute Cores 4C+8G
+- GPU: Advanced Micro Devices, Inc. [AMD/ATI] Tonga PRO [Radeon R9 285/380]
+- Mesa: 17.1.0-devel (git-08df015)
