@@ -59,3 +59,4 @@ Some info on the system where the bug was found:
 - CPU: AMD A10-7850K Radeon R7, 12 Compute Cores 4C+8G
 - GPU: Advanced Micro Devices, Inc. [AMD/ATI] Tonga PRO [Radeon R9 285/380]
 - Mesa: 17.1.0-devel (git-08df015)
+- OS: Ubuntu 16.04, Linux 4.4.0-67-generic
