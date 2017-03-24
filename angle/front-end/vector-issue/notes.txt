@@ -1,0 +1,30 @@
+I am unsure whether the code in example.frag is legitimate GLSL,
+because it is not clear to me whether it is OK to index into a swizzle
+mask using a loop index.
+
+However, the error that is given is of an internal nature, suggesting
+that ANGLE has generated invalid HLSL code:
+
+"
+Failed to link shader program.
+C:\fakepath(94,45): error X3000: syntax error: unexpected token ','
+C:\fakepath(94,1-53): error X3013: 'dyn_index_write_vec3': no matching 0 parameter function
+
+Warning: D3D shader compilation failed with default flags. (ps_5_0)
+ Retrying with skip validation
+C:\fakepath(94,45): error X3000: syntax error: unexpected token ','
+C:\fakepath(94,1-53): error X3013: 'dyn_index_write_vec3': no matching 0 parameter function
+
+Warning: D3D shader compilation failed with skip validation flags. (ps_5_0)
+ Retrying with skip optimization
+C:\fakepath(94,45): error X3000: syntax error: unexpected token ','
+C:\fakepath(94,1-53): error X3013: 'dyn_index_write_vec3': no matching 0 parameter function
+
+Warning: D3D shader compilation failed with skip optimization flags. (ps_5_0)
+Failed to create D3D shaders.
+"
+
+So it seems that the code should either be accepted, or should give a
+higher-level error explaining why the GLSL code is invalid.
+
+The code is accepted by Edge.
