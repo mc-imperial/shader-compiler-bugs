@@ -1,0 +1,5 @@
+On NVIDIA Windows WebGL, recipient gives recipient.frag, while all reduced variants give a black image.
+
+On NVIDIA Windows Desktop, recipient itself gives a black image.
+
+Worth investigating on other platforms to see whether this shader is floating-point sensitive.
