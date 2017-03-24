@@ -1,0 +1,7 @@
+Windows 10
+
+Google Chrome Version 57.0.2987.110 (64-bit)
+
+NVIDIA GeForce GTX 770
+
+Driver version 21.21.13.7878
