@@ -1,0 +1,290 @@
+<!doctype html>
+<html>
+<head>
+<title>WebGL Viewer</title>
+<style>
+    #opengl-canvas {
+        border: none;
+    }
+
+    #location, #shader_source, #console {
+        width: 622px;
+        height: 200px;
+        float: left;
+        clear: both;
+        resize: none;
+    }
+
+    button {
+        width: 200px;
+        margin: 0px;
+        float: left;
+        
+    }
+
+    .cell {
+        display: table-cell;
+        vertical-align: top;
+    }
+
+    .shader_location_input {
+        text-align: center;
+    }
+</style>
+<script type="text/javascript">
+
+var globalObject = null;
+var globalCounter = 0;
+
+function stop() {
+  if(globalObject != null) {
+    console.log("Stopping previous render loop.")
+    var g = globalObject;
+    globalObject = null;
+    g.running = false;
+    g.gl.clear(g.gl.COLOR_BUFFER_BIT);
+  }
+}
+
+function startSafe() {
+  try {
+    document.getElementById("console").value = "";
+    start();
+  } catch(e) {
+    document.getElementById("console").value = e;
+  }
+}
+
+function start() {
+  var vertexShaderSource = "#version 100\nattribute vec2 aVertexPosition; void main(void) { gl_Position = vec4(aVertexPosition, 1.0, 1.0); }";
+  var fragmentShaderSource = document.getElementById("shader_source").value;;
+
+  var vertices = [
+    -1.0,  1.0,
+    -1.0, -1.0,
+     1.0, -1.0,
+     1.0,  1.0
+  ];
+
+  var indicies = [
+    0, 1, 2,   2, 3, 0
+  ];
+  
+  stop();
+  console.log("Start");
+  
+  // WebGL
+  var canvas = document.getElementById("opengl-canvas");
+  var gl = null;
+  try {
+    gl = canvas.getContext("experimental-webgl");
+  }
+  catch(e) {
+  }
+  if (!gl) {
+    throw "Failed to initialize WebGL.";
+  }
+
+  // vertex shader
+  var vertexShader = gl.createShader(gl.VERTEX_SHADER);
+  gl.shaderSource(vertexShader, vertexShaderSource);
+  gl.compileShader(vertexShader);
+  if (!gl.getShaderParameter(vertexShader, gl.COMPILE_STATUS)) {
+    throw "Failed to compile vertex shader.\n" + gl.getShaderInfoLog(vertexShader);
+  }
+
+  // fragment shader
+  var fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
+  gl.shaderSource(fragmentShader, fragmentShaderSource);
+  gl.compileShader(fragmentShader);
+  if (!gl.getShaderParameter(fragmentShader, gl.COMPILE_STATUS)) {
+    throw "Failed to compile fragment shader.\n" + gl.getShaderInfoLog(fragmentShader);
+  }
+
+  // shader program
+  var shaderProgram = gl.createProgram();
+  gl.attachShader(shaderProgram, vertexShader);
+  gl.attachShader(shaderProgram, fragmentShader);
+  gl.linkProgram(shaderProgram);
+  if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
+    throw "Failed to link shader program.\n" + gl.getProgramInfoLog(shaderProgram);
+  }
+  gl.useProgram(shaderProgram);
+  
+  var vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aVertexPosition");
+  gl.enableVertexAttribArray(vertexPositionAttribute);
+
+  var verticesBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, verticesBuffer);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+
+  var indiciesBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indiciesBuffer);
+  gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indicies), gl.STATIC_DRAW);
+
+  trySetUniform2f(gl, shaderProgram, "injectionSwitch", 0.0, 1.0);
+  trySetUniform1f(gl, shaderProgram, "time", 0.0);
+  trySetUniform2f(gl, shaderProgram, "mouse", 0.0, 0.0);
+  trySetUniform2f(gl, shaderProgram, "resolution", canvas.width, canvas.height);
+  
+  globalObject = { running : true, id : globalCounter, gl : gl };
+  globalCounter += 1;
+
+  var globalObjectRef = globalObject;
+
+  gl.bindBuffer(gl.ARRAY_BUFFER, verticesBuffer);
+  gl.vertexAttribPointer(vertexPositionAttribute, 2, gl.FLOAT, false, 0, 0);
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indiciesBuffer);
+
+  var drawFunction = function(now) {
+
+    if(!globalObjectRef.running) return;
+
+    gl.clearColor(0.0, 0.0, 0.0, 1.0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    
+    gl.drawElements(gl.TRIANGLES, 6, gl.UNSIGNED_SHORT, 0);
+
+    requestAnimationFrame(drawFunction);
+  };
+  
+  requestAnimationFrame(drawFunction);
+
+}
+
+function trySetUniform1f(gl, shaderProgram, name, x) {
+  var loc = gl.getUniformLocation(shaderProgram, name);
+  if (loc != null) {
+    gl.uniform1f(loc, x);
+  }
+}
+
+function trySetUniform2f(gl, shaderProgram, name, x, y) {
+  var loc = gl.getUniformLocation(shaderProgram, name);
+  if (loc != null) {
+    gl.uniform2f(loc, x, y);
+  }
+}
+
+</script>
+</head>
+<body>
+<div class="grid">
+  <div class="row">
+    <div class="cell">
+      <canvas id="opengl-canvas" style="border: none;" width="640" height="480"></canvas>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="cell shader_location_input">
+      <textarea id="shader_source" placeholder="Source of fragment shader">
+#version 100
+
+#ifdef GL_ES
+#ifdef GL_FRAGMENT_PRECISION_HIGH
+precision highp float;
+precision highp int;
+#else
+precision mediump float;
+precision mediump int;
+#endif
+#endif
+
+uniform vec2 injectionSwitch;
+
+uniform float time;
+
+uniform vec2 mouse;
+
+uniform vec2 resolution;
+
+const int balls = 40;
+
+const float tick = 0.04;
+
+vec4 worm_color(int i)
+{
+    int j = i / 4 * 4 - i;
+    if(j == 0)
+        {
+            if(injectionSwitch.x > injectionSwitch.y)
+                {
+                    return vec4(1.0);
+                }
+            return vec4(0.8, 0.5, 0.5, 1.0);
+        }
+    return vec4(0.8, 0.7, 0.4, 1.0);
+}
+vec2 path(float time)
+{
+    time /= 18.0;
+    return vec2(cos(time * 1.2), sin(time * 0.93));
+}
+float ease_in_out(float t)
+{
+    return sin(t * 3.141592653);
+}
+float norm(vec2 p, int offset)
+{
+    float a = time + float(offset) * 0.04;
+    p = vec2(p.x * cos(a) - p.y * sin(a), p.x * sin(a) + p.y * cos(a));
+    if(injectionSwitch.x > injectionSwitch.y)
+        {
+            if(injectionSwitch.x > injectionSwitch.y)
+                {
+                    return 1.0;
+                }
+        }
+    float e = 9.01;
+    return pow(pow(p.x, e) + pow(p.y, e), 1.0 / e);
+    return length(p);
+}
+vec4 color_at(vec2 p)
+{
+    vec4 hit_color = vec4(0.0);
+    bool hit = false;
+    for(
+        int i = 0;
+        i < balls;
+        i ++
+    )
+        {
+            int where = int(time / tick) - i;
+            float size = 0.3 * ease_in_out((float(i) + mod(time, tick) / tick) / float(balls));
+            if(norm(p - path(float(where)), where) < size && ! hit)
+                {
+                    hit = true;
+                    hit_color = worm_color(where);
+                }
+        }
+    return hit_color;
+}
+void main(void)
+{
+    vec2 p = (gl_FragCoord.xy - resolution.xy / 2.) / min(resolution.x, resolution.y) * 3.;
+    vec4 hit_color = color_at(p);
+    bool hit = hit_color != vec4(0.0);
+    bool out1 = color_at(p + 0.2 * (mouse - vec2(0.5, 0.5))) != vec4(0.0);
+    if(injectionSwitch.x > injectionSwitch.y)
+        {
+            return;
+        }
+    float fac = mod(p.y + p.x * 0.7 + sin(p.x) * 0.3 + time * 0.1, 1.0) * 0.3 + 0.7;
+    vec4 color_off = vec4(.5, fac * fac * .4, fac * .3, 1.);
+    gl_FragColor = hit ? hit_color : out1 ? vec4(0.1, 0.0, 0.0, 0.0) : color_off;
+}
+</textarea>
+      <div>
+        <button id="start" title="Starts rendering fragment shader" onclick="startSafe()">Start rendering (Execute)</button>
+        <button id="stop" title="Stops rendering" onclick="stop()">Stop rendering</button>
+      </div>
+      <textarea id="console" placeholder="Shader compilation output" readonly></textarea>
+    </div>
+    
+  </div>
+</div>
+</div>
+</body>
+</html>
+
