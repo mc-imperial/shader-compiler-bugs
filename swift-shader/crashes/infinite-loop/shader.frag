@@ -1,3 +1,4 @@
 void main() {
-  for (int;;);
+  for (int i; i < 10; i++) {
+  }
 }
