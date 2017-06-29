@@ -54,10 +54,9 @@ The shaders render completely different images, which they should not.
 Mesa code coverage:
 --------------------
 
-The comparative code coverage of Mesa between the runs of the original
-and the variant shaders is available here (warning, lengthy web page):
-
-https://www.doc.ic.ac.uk/~hevrard/hidden_glfuzz/coverage_mesa-17-1-3_18May_130_noliterals_colorgrid_modulo_inv_variant_2/index.html
+Unzip the `coverage.html.zip` file to get a web page that present the
+comparative coverage of Mesa source code between the execution of the
+original and the variant shader.
 
 Additional Information:
 -------------------------------
