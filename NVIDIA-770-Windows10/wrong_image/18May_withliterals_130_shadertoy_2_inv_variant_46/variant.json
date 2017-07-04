@@ -1,0 +1,59 @@
+{
+  "iResolution": {
+    "func": "glUniform3f",
+    "args": [
+      256.0,
+      256.0,
+      0.0
+    ]
+  },
+  "iGlobalTime": {
+    "func": "glUniform1f",
+    "args": [
+      1234.0
+    ]
+  },
+  "iGlobalDelta": {
+    "func": "glUniform1f",
+    "args": [
+      1234.0
+    ]
+  },
+  "iGlobalFrame": {
+    "func": "glUniform1f",
+    "args": [
+      1234.0
+    ]
+  },
+  "iMouse": {
+    "func": "glUniform4f",
+    "args": [
+      231.0,
+      123.0,
+      0.0,
+      0.0
+    ]
+  },
+  "iDate": {
+    "func": "glUniform4f",
+    "args": [
+      2016.0,
+      9.0,
+      22.0,
+      61200.0
+    ]
+  },
+  "iSampleRate": {
+    "func": "glUniform1f",
+    "args": [
+      44100
+    ]
+  },
+  "injectionSwitch": {
+    "func": "glUniform2f",
+    "args": [
+      0.0,
+      1.0
+    ]
+  }
+}
