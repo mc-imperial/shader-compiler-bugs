@@ -30,12 +30,11 @@
     "wfe": "1e4e644996b7f2a0"
   },
   "priority": 9, 
-  "program_tags": "crowd-benchmarking,tensorflow", 
+  "program_tags": "crowd-benchmarking,opencl-bugs", 
   "tags": [
     "crowdsource", 
     "experiments", 
     "program benchmarking", 
-    "program optimization", 
-    "tensorflow"
+    "program optimization" 
   ]
 }
