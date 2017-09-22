@@ -1,0 +1,8 @@
+glslangValidator recipient_reduced_final_opt.frag
+recipient_reduced_final_opt.frag
+Warning, version 450 is not yet complete; most version-specific features are present, but some are missing.
+ERROR: 0:5: '_0' : undeclared identifier 
+ERROR: 0:5: '' : compilation terminated 
+ERROR: 2 compilation errors.  No code generated.
+
+
